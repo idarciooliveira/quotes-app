@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
 import styles from '../styles/home.module.scss';
+import { useEffect, useState } from 'react';
 import { FiShare, FiClipboard } from 'react-icons/fi';
 
 import { format } from 'date-fns';
@@ -29,6 +29,25 @@ export default function Home() {
         alert('Erro no servidor!');
       });
   };
+
+  const handleCopyClipboard = () => {
+    const { author, body } = quote;
+
+    const copiedText = document.getElementById('input');
+
+    document.execCommand('copy');
+
+    alert('Copied the text: ' + copiedText.value);
+  };
+
+  const handleShareLink = () => {
+    const copiedText = document.createElement('input');
+    copiedText.value = document.URL;
+    copiedText.select();
+    copiedText.setSelectionRange(0, 9999); /* For mobile devices */
+    document.execCommand('copy');
+  };
+
   return (
     <div className={styles.main}>
       <div className={styles.header}>
@@ -36,15 +55,15 @@ export default function Home() {
         <h2>{todayDate}</h2>
       </div>
       <div className={styles.container}>
-        <p>{quote?.body}</p>
+        <p id='input'>{quote?.body}</p>
         <h2>{quote?.author}</h2>
       </div>
       <div className={styles.actionsContainer}>
         <span>
-          <FiClipboard title='Copiar' size={24} />
+          <FiClipboard title='Copiar' size={24} onClick={handleCopyClipboard} />
         </span>
         <span>
-          <FiShare title='Partilhar' size={24} />
+          <FiShare title='Partilhar' size={24} onClick={handleShareLink} />
         </span>
       </div>
       <div className={styles.buttonContainer}>
